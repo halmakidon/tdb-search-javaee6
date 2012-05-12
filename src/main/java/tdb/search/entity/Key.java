@@ -1,5 +1,6 @@
 package tdb.search.entity;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -10,6 +11,7 @@ import javax.persistence.Id;
  *
  */
 @Entity
+@Cacheable(true)
 public class Key extends BaseEntity {
 
 	private static final long serialVersionUID = -4976341476730921130L;

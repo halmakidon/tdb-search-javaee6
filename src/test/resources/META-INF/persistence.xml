@@ -13,7 +13,7 @@
 			<property name="javax.persistence.jdbc.password" value="sa" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:h2:h2/tdb-search-test" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
-            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
             <property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy" />

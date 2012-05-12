@@ -1,0 +1,37 @@
+package tdb.search.ejb;
+
+import static org.junit.Assert.*;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import org.junit.Test;
+
+import tdb.search.ScrapingException;
+import tdb.search.util.Page;
+
+public class ScrapeServiceTest {
+
+	@Test
+	public void test() throws UnsupportedEncodingException, ScrapingException {
+
+		String word = "帝国";
+
+		Page page = new Page();
+
+		ScrapeService scraper1 = new ScrapeService();
+		SearchResult result1 = scraper1.search(word, page);
+
+		ScrapeService scraper2 = new ScrapeService();
+		SearchResult result2 = scraper2.search(word, page.next());
+
+		assertEquals(result1.getMaxPage(), result2.getMaxPage());
+		assertEquals(result1.getSearchHit(), result2.getSearchHit());
+		assertEquals(result1.getCurrentPage(), 1);
+		assertEquals(result2.getCurrentPage(), 2);
+		assertTrue(result1.getList().length >= 1);
+		assertTrue(result2.getList().length >= 1);
+		assertTrue(result1.isSuccess());
+		assertTrue(result2.isSuccess());
+	}
+}

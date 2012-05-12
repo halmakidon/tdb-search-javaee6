@@ -1,7 +1,5 @@
 package tdb.search.testutil;
 
-import java.util.HashMap;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -13,9 +11,13 @@ public class DBTestUtilsBean {
 	private EntityManager em;
 
 	public DBTestUtilsBean() {
-
 		emf = Persistence.createEntityManagerFactory("tdb-search-test");
 		em = emf.createEntityManager();
+	}
+
+	public void close() {
+		em.close();
+		emf.close();
 	}
 
 	public EntityManager getEntityManager() {
@@ -23,6 +25,9 @@ public class DBTestUtilsBean {
 	}
 
 	public void start(Worker worker) {
+		if (!em.isOpen()) {
+			em = emf.createEntityManager();
+		}
 		EntityTransaction tx = em.getTransaction();
 		tx.begin();
 		try {
@@ -31,9 +36,6 @@ public class DBTestUtilsBean {
 		} catch (Exception e) {
 			tx.rollback();
 			throw new RuntimeException(e);
-		}finally{
-			em.close();
-			emf.close();
 		}
 	}
 }

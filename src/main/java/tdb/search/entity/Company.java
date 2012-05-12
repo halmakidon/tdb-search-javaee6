@@ -1,5 +1,6 @@
 package tdb.search.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -50,6 +51,9 @@ public class Company extends BaseEntity {
 	 * @return the keys
 	 */
 	public final Set<Key> getKeys() {
+		if (keys == null) {
+			keys = new HashSet<Key>();
+		}
 		return keys;
 	}
 
@@ -57,7 +61,7 @@ public class Company extends BaseEntity {
 	 * @param keys
 	 *            the keys to set
 	 */
-	public final void setKeys(Set<Key> keys) {
+	protected final void setKeys(Set<Key> keys) {
 		this.keys = keys;
 	}
 

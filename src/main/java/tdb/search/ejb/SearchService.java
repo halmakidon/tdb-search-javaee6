@@ -1,5 +1,6 @@
 package tdb.search.ejb;
 
+import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -32,7 +33,27 @@ public class SearchService {
 
 		SearchResult result = scrape.search(word, page);
 		cache.cache(word, result.getList());
+
+		asyncCreateCache(word, result);
+
 		return result;
 	}
 
+	@Asynchronous
+	public void asyncCreateCache(String word, SearchResult result) {
+		int cnt = result.getCurrentPage() + 1;
+		int max = result.getMaxPage();
+
+		// maxのページも取得する必要有り
+		for(; cnt <= max; cnt++) {
+			SearchResult searchResult = scrape.search(word, new Page(cnt));
+			cache.cache(word, searchResult.getList());
+		}
+		// 前のページを取得する
+		cnt = result.getCurrentPage() - 1;
+		for(; cnt > 0; cnt--) {
+			SearchResult searchResult = scrape.search(word, new Page(cnt));
+			cache.cache(word, searchResult.getList());
+		}
+	}
 }

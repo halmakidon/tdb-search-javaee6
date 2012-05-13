@@ -10,7 +10,6 @@ import tdb.search.entity.Key;
 @Stateless
 public class DBCacheService {
 
-
 	@PersistenceContext
 	protected EntityManager em;
 
@@ -27,15 +26,18 @@ public class DBCacheService {
 
 	/**
 	 * キーと一緒に会社情報を格納する
+	 *
 	 * @param word
 	 * @param companyArray
 	 */
 	public void cache(String word, CompanyResult[] companyArray) {
-		Key key = new Key(word);
-		em.persist(key);
-
+		Key key = em.find(Key.class, word);
+		if (key == null) {
+			key = new Key(word);
+			em.persist(key);
+		}
 		Company[] companyList = Converter.companyResult(companyArray);
-		for(Company company : companyList) {
+		for (Company company : companyList) {
 			company.getKeys().add(key);
 			em.merge(company);
 		}

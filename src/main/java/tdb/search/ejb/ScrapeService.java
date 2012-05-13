@@ -98,8 +98,13 @@ public class ScrapeService {
 		result.setList(companyList.toArray(new CompanyResult[companyList.size()]));
 
 		// 以降ページ数を検索数ヒット領域から取得する
-		result.setSearchHit(Integer.parseInt(hitArea.select("div.left > span")
-				.text()));
+		String hitCount = hitArea.select("div.left > span").text();
+		int endPoint = hitCount.indexOf("件までの");
+		if (endPoint > -1) {
+			result.setSearchHit(Integer.parseInt(hitCount.substring(0, endPoint)));
+		}else{
+			result.setSearchHit(Integer.parseInt(hitCount));
+		}
 
 		// div.centerがない場合は1ページのみ
 		Elements divCenter = hitArea.select("div.center");

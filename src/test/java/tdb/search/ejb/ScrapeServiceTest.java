@@ -13,7 +13,7 @@ import tdb.search.util.Page;
 public class ScrapeServiceTest {
 
 	@Test
-	public void test() throws UnsupportedEncodingException, ScrapingException {
+	public void test() throws UnsupportedEncodingException {
 
 		String word = "帝国";
 

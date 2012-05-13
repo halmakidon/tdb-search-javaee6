@@ -13,11 +13,13 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import tdb.search.ScrapingException;
 import tdb.search.util.Log;
 import tdb.search.util.Page;
 
 /**
  * スクレイピングサービス
+ *
  * @author sekky
  *
  */
@@ -25,6 +27,9 @@ import tdb.search.util.Page;
 public class ScrapeService {
 
 	private static Logger LOG = Log.getLogger(ScrapeService.class);
+
+	public static final int TIMEOUT = 3000;
+	public static final int MAX_RETRY_COUNT = 2;
 
 	public SearchResult search(String word, Page page) {
 
@@ -36,7 +41,8 @@ public class ScrapeService {
 		}
 
 		String requestURI = "http://www.tdb.co.jp/service/u/1005.jsp"
-				+ "?page_count=" + page.getPage() + "&companyName=" + encodedWord
+				+ "?page_count=" + page.getPage() + "&companyName="
+				+ encodedWord
 				+ "&companyNameAccord=1&address_sikugun=&freeWord=";
 
 		LOG.info(requestURI);
@@ -44,18 +50,41 @@ public class ScrapeService {
 		return searchCompany(requestURI, word, page);
 	}
 
-	protected SearchResult searchCompany(String url, String word, Page page) {
-
+	private static Document getDocument(String url) {
 		Document doc = null;
-		try {
-			doc = Jsoup.connect(url).get();
-		} catch (IOException e) {
-			SearchResult result = new SearchResult();
-			result.setSuccess(false);
-			return result;
+		for (int i = 0; i < MAX_RETRY_COUNT; i++) {
+			try {
+				doc = Jsoup.connect(url).timeout(TIMEOUT).get();
+			} catch (IOException e) {
+				LOG.warning(e.toString());
+				continue;
+			}
+			// 例外が発生しない場合は即ブレイクする
+			break;
 		}
 
+		if (doc == null) {
+			throw new ScrapingException();
+		}
+		return doc;
+	}
+
+	protected SearchResult searchCompany(String url, String word, Page page) {
+
+		Document doc = getDocument(url);
+
 		SearchResult result = new SearchResult();
+		// 検索が成功したかを検索件数ヒット領域から判定する
+		Elements hitArea = doc.select(".searchHit:eq(0)");
+		if (hitArea.isEmpty()) {
+			result.setCurrentPage(0);
+			result.setList(new CompanyResult[0]);
+			result.setMaxPage(0);
+			result.setSearchHit(0);
+			result.setSuccess(true);
+			return result;
+		}
+		// 成功した場合は各行を取得する
 		Elements rows = doc.select(".searchResult tr:gt(0)");
 		ArrayList<CompanyResult> companyList = new ArrayList<CompanyResult>();
 		for (Element row : rows) {
@@ -68,17 +97,26 @@ public class ScrapeService {
 		}
 		result.setList(companyList.toArray(new CompanyResult[companyList.size()]));
 
-		Elements hitArea = doc.select(".searchHit:eq(0)");
-		result.setSearchHit(Integer.parseInt(hitArea.select("div.left > span").text()));
+		// 以降ページ数を検索数ヒット領域から取得する
+		result.setSearchHit(Integer.parseInt(hitArea.select("div.left > span")
+				.text()));
 
-		String pageText = hitArea.select("div.center").text();
-	    int sliceIndex = pageText.indexOf("ページ中");
-	    result.setMaxPage(Integer.parseInt(pageText.substring(sliceIndex-1, sliceIndex)));
+		// div.centerがない場合は1ページのみ
+		Elements divCenter = hitArea.select("div.center");
+		if (divCenter.isEmpty()) {
+			result.setMaxPage(0);
+			result.setCurrentPage(0);
+		} else {
+			String pageText = divCenter.text();
+			int sliceIndex = pageText.indexOf("ページ中");
+			result.setMaxPage(Integer.parseInt(pageText.substring(
+					sliceIndex - 1, sliceIndex)));
 
-	    result.setCurrentPage(Integer.parseInt(hitArea.select("div.center select option[selected]").val()));
+			result.setCurrentPage(Integer.parseInt(hitArea.select(
+					"div.center select option[selected]").val()));
+		}
+		result.setSuccess(true);
 
-	    result.setSuccess(true);
-
-	    return result;
+		return result;
 	}
 }

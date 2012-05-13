@@ -1,6 +1,6 @@
 package tdb.search;
 
-public class ScrapingException extends Exception {
+public class ScrapingException extends RuntimeException {
 
 	private static final long serialVersionUID = 4891744419004152098L;
 

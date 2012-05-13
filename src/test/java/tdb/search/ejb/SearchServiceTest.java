@@ -51,11 +51,16 @@ public class SearchServiceTest {
 		@Override
 		public void run() {
 			try {
-				search.search("帝国", new Page());
-				//TODO テストを書く
+				// 1回目
+				search.search("ステッチ", new Page());
+				// 2回目
+				search.search("ステッチ", new Page());
+				// 存在しない
+				search.search("UNKO", new Page());
+
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
-	};
+	}
 }

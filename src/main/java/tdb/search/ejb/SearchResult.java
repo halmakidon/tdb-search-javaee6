@@ -1,8 +1,12 @@
 package tdb.search.ejb;
 
 import java.io.Serializable;
+
 import java.util.Arrays;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "SearchResult")
 public class SearchResult implements Serializable {
 
 	private static final long serialVersionUID = 7482782076465580525L;
@@ -88,7 +92,9 @@ public class SearchResult implements Serializable {
 		this.success = success;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

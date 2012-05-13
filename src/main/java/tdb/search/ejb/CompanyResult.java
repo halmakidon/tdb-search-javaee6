@@ -2,11 +2,15 @@ package tdb.search.ejb;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * 結果返却用のCompanyオブジェクト
+ *
  * @author sekky
  *
  */
+@XmlRootElement(name = "CompanyResult")
 public class CompanyResult implements Serializable {
 
 	private static final long serialVersionUID = -3920288284434129323L;
@@ -75,7 +79,9 @@ public class CompanyResult implements Serializable {
 		this.type = type;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 *
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

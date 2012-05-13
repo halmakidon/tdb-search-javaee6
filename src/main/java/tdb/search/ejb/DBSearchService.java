@@ -60,7 +60,7 @@ public class DBSearchService {
 		cq.where(cb.like(root.get(Company_.name), wordParam));
 
 		TypedQuery<Company> query = em.createQuery(cq);
-		query.setParameter(wordParam, word);
+		query.setParameter(wordParam, likeWord(word));
 		query.setFirstResult(page.getFirstResult());
 		query.setMaxResults(page.getMaxResults());
 		List<Company> companyList = query.getResultList();
@@ -87,9 +87,18 @@ public class DBSearchService {
 		cq.select(cb.count(root));
 
 		TypedQuery<Long> query = em.createQuery(cq);
-		query.setParameter(wordParam, word);
+		query.setParameter(wordParam, likeWord(word));
 
 		return query.getSingleResult().intValue();
+	}
+
+	/**
+	 * 検索文字列を前方一致検索用に加工する
+	 * @param word
+	 * @return
+	 */
+	private static String likeWord (String word) {
+		return word + "%";
 	}
 
 }

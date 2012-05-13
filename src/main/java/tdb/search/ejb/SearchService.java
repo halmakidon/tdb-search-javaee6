@@ -24,7 +24,7 @@ public class SearchService {
 	@EJB
 	protected DBCacheService cache;
 
-	public SearchResult search(String word, Page page) throws ScrapingException {
+	public SearchResult search(String word, Page page) {
 
 		if (cache.hasCache(word)) {
 			return db.search(word, page);

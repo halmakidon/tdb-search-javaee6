@@ -113,9 +113,10 @@ public class ScrapeService {
 			result.setCurrentPage(0);
 		} else {
 			String pageText = divCenter.text();
-			int sliceIndex = pageText.indexOf("ページ中");
+			int endIndex = pageText.indexOf("ページ中");
+			int startIndex = pageText.indexOf("全") + 1;
 			result.setMaxPage(Integer.parseInt(pageText.substring(
-					sliceIndex - 1, sliceIndex)));
+					startIndex, endIndex)));
 
 			result.setCurrentPage(Integer.parseInt(hitArea.select(
 					"div.center select option[selected]").val()));

@@ -39,7 +39,7 @@ public class DBSearchService {
 		result.setList(Converter.company(companyList.toArray(new Company[companyList.size()])));
 		result.setCurrentPage(page.getPage());
 		result.setMaxPage(page.calcurateMaxPage(maxCount));
-		result.setSearchHit(maxCount);
+		result.setSearchHit(companyList.size());
 		result.setSuccess(true);
 
 		return result;

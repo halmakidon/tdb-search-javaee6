@@ -1,6 +1,5 @@
 package tdb.search.ejb;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -11,10 +10,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.SetJoin;
 
 import tdb.search.entity.Company;
 import tdb.search.entity.Company_;
 import tdb.search.entity.Key;
+import tdb.search.entity.Key_;
 import tdb.search.util.Page;
 
 @Stateless
@@ -55,12 +56,14 @@ public class DBSearchService {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Company> cq = cb.createQuery(Company.class);
 		Root<Company> root = cq.from(Company.class);
+		// key情報でジョインする
+		SetJoin<Company, Key> joinKey = root.join(Company_.keys);
 
 		ParameterExpression<String> wordParam = cb.parameter(String.class);
-		cq.where(cb.like(root.get(Company_.name), wordParam));
+		cq.where(cb.equal(joinKey.get(Key_.word), wordParam));
 
 		TypedQuery<Company> query = em.createQuery(cq);
-		query.setParameter(wordParam, likeWord(word));
+		query.setParameter(wordParam, word);
 		query.setFirstResult(page.getFirstResult());
 		query.setMaxResults(page.getMaxResults());
 		List<Company> companyList = query.getResultList();
@@ -80,25 +83,17 @@ public class DBSearchService {
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 
 		Root<Company> root = cq.from(Company.class);
+		// key情報でジョインする
+		SetJoin<Company, Key> joinKey = root.join(Company_.keys);
 
 		ParameterExpression<String> wordParam = cb.parameter(String.class);
-		cq.where(cb.like(root.get(Company_.name), wordParam));
+		cq.where(cb.like(joinKey.get(Key_.word), wordParam));
 
 		cq.select(cb.count(root));
 
 		TypedQuery<Long> query = em.createQuery(cq);
-		query.setParameter(wordParam, likeWord(word));
+		query.setParameter(wordParam, word);
 
 		return query.getSingleResult().intValue();
 	}
-
-	/**
-	 * 検索文字列を前方一致検索用に加工する
-	 * @param word
-	 * @return
-	 */
-	private static String likeWord (String word) {
-		return word + "%";
-	}
-
 }

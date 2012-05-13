@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import org.junit.Test;
 
 import tdb.search.entity.Company;
+import tdb.search.entity.Key;
 import tdb.search.testutil.DBTestUtilsBean;
 import tdb.search.testutil.Worker;
 import tdb.search.util.Page;
@@ -35,24 +36,34 @@ public class DBSearchServiceTest {
 
 		@Override
 		public void run() {
+			Key k1 = new Key("帝国");
 			Company c1 = new Company();
 			c1.setAddress("Address1");
 			c1.setCode("Code1");
 			c1.setName("帝国データバンク");
 			c1.setType("Type1");
+			c1.getKeys().add(k1);
 
+			Key k2 = new Key("王国");
 			Company c2 = new Company();
 			c2.setAddress("Address2");
 			c2.setCode("Code2");
 			c2.setName("王国データバンク");
 			c2.setType("Type2");
+			c2.getKeys().add(k2);
 
+			Key k3 = new Key("帝");
 			Company c3 = new Company();
 			c3.setAddress("Address3");
 			c3.setCode("Code3");
 			c3.setName("帝");
 			c3.setType("Type3");
+			c3.getKeys().add(k3);
 
+			c1.getKeys().add(k3);
+			em.persist(k1);
+			em.persist(k2);
+			em.persist(k3);
 			em.persist(c1);
 			em.persist(c2);
 			em.persist(c3);

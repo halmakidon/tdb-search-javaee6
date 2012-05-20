@@ -4,7 +4,6 @@ import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
-import tdb.search.ScrapingException;
 import tdb.search.util.Page;
 
 /**
@@ -25,6 +24,11 @@ public class SearchService {
 	@EJB
 	protected DBCacheService cache;
 
+	@EJB
+	protected BatchUtilsBean batchUtils;
+
+
+
 	public SearchResult search(String word, Page page) {
 
 		if (cache.hasCache(word)) {
@@ -41,6 +45,7 @@ public class SearchService {
 
 	@Asynchronous
 	public void asyncCreateCache(String word, SearchResult result) {
+
 		int cnt = result.getCurrentPage() + 1;
 		int max = result.getMaxPage();
 
@@ -54,6 +59,7 @@ public class SearchService {
 		for(; cnt > 0; cnt--) {
 			SearchResult searchResult = scrape.search(word, new Page(cnt));
 			cache.cache(word, searchResult.getList());
+			batchUtils.cacheClearForBatch(cnt);
 		}
 	}
 }

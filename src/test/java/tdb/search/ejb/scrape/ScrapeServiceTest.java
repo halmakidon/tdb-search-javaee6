@@ -1,13 +1,13 @@
-package tdb.search.ejb;
+package tdb.search.ejb.scrape;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 
 import org.junit.Test;
 
-import tdb.search.ScrapingException;
+import tdb.search.rsentity.SearchResult;
 import tdb.search.util.Page;
 
 public class ScrapeServiceTest {

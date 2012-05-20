@@ -1,4 +1,4 @@
-package tdb.search.ejb;
+package tdb.search.ejb.db;
 
 import static org.junit.Assert.*;
 
@@ -6,8 +6,10 @@ import javax.persistence.EntityManager;
 
 import org.junit.Test;
 
+import tdb.search.ejb.db.DBSearchService;
 import tdb.search.entity.Company;
 import tdb.search.entity.Key;
+import tdb.search.rsentity.SearchResult;
 import tdb.search.testutil.DBTestUtilsBean;
 import tdb.search.testutil.Worker;
 import tdb.search.util.Page;
@@ -17,8 +19,7 @@ public class DBSearchServiceTest {
 	@Test
 	public void testSearch() {
 		DBTestUtilsBean testUtils = new DBTestUtilsBean();
-		DBSearchService search = new DBSearchService();
-		search.em = testUtils.getEntityManager();
+		DBSearchService search = new DBSearchService(testUtils.getEntityManager());
 
 		testUtils.start(new TestSearch(testUtils.getEntityManager(), search));
 

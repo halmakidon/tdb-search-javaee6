@@ -1,15 +1,11 @@
 package tdb.search.ejb;
 
-import static org.junit.Assert.*;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.resource.spi.work.Work;
-
 import org.junit.Test;
 
+import tdb.search.ejb.db.BatchUtilsBean;
+import tdb.search.ejb.db.DBCacheService;
+import tdb.search.ejb.db.DBSearchService;
+import tdb.search.ejb.scrape.ScrapeService;
 import tdb.search.testutil.DBTestUtilsBean;
 import tdb.search.testutil.Worker;
 import tdb.search.util.Page;
@@ -21,18 +17,15 @@ public class SearchServiceTest {
 
 		DBTestUtilsBean dbtest = new DBTestUtilsBean();
 
-		DBCacheService cache = new DBCacheService();
-		cache.em = dbtest.getEntityManager();
+		DBCacheService cache = new DBCacheService(dbtest.getEntityManager());
 
-		DBSearchService db = new DBSearchService();
-		db.em = dbtest.getEntityManager();
+		DBSearchService db = new DBSearchService(dbtest.getEntityManager());
+
+		BatchUtilsBean batchUtils = new BatchUtilsBean(dbtest.getEntityManager());
 
 		ScrapeService scrape = new ScrapeService();
 
-		SearchService search = new SearchService();
-		search.cache = cache;
-		search.db = db;
-		search.scrape = scrape;
+		SearchService search = new SearchService(scrape, db, cache, batchUtils);
 
 		TestSearch work1 = new TestSearch(search);
 		dbtest.start(work1);

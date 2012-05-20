@@ -1,9 +1,11 @@
-package tdb.search.ejb;
+package tdb.search.dto;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import tdb.search.dto.CompanyResult;
+import tdb.search.dto.Converter;
 import tdb.search.entity.Company;
 import tdb.search.entity.Key;
 

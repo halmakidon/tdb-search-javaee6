@@ -1,4 +1,4 @@
-package tdb.search.ejb;
+package tdb.search.ejb.db;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,6 +9,14 @@ public class BatchUtilsBean {
 
 	@PersistenceContext
 	protected EntityManager em;
+
+	public BatchUtilsBean() {
+	}
+
+	public BatchUtilsBean(EntityManager em) {
+		this.em = em;
+	}
+
 
 	public static final int BATCH_SIZE = 25;
 

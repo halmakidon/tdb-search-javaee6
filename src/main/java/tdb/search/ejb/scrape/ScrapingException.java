@@ -1,4 +1,4 @@
-package tdb.search;
+package tdb.search.ejb.scrape;
 
 public class ScrapingException extends RuntimeException {
 

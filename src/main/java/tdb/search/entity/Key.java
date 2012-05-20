@@ -3,7 +3,6 @@ package tdb.search.entity;
 import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 /**
  * 検索キーを表すクラス- イミュータブル

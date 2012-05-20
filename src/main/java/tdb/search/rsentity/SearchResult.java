@@ -1,6 +1,8 @@
-package tdb.search.ejb;
+package tdb.search.rsentity;
 
 import java.util.Arrays;
+
+import tdb.search.dto.CompanyResult;
 
 public class SearchResult extends AbstractResult {
 

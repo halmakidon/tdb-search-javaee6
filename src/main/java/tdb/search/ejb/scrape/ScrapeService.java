@@ -1,4 +1,4 @@
-package tdb.search.ejb;
+package tdb.search.ejb.scrape;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -13,7 +13,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import tdb.search.ScrapingException;
+import tdb.search.dto.CompanyResult;
+import tdb.search.rsentity.SearchResult;
 import tdb.search.util.Log;
 import tdb.search.util.Page;
 

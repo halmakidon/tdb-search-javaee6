@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 
 import tdb.search.ejb.SearchService;
+import tdb.search.rsentity.ErrorEntity;
 import tdb.search.util.Page;
 
 @Stateless

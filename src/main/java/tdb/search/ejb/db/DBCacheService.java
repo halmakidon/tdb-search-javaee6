@@ -1,9 +1,11 @@
-package tdb.search.ejb;
+package tdb.search.ejb.db;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import tdb.search.dto.CompanyResult;
+import tdb.search.dto.Converter;
 import tdb.search.entity.Company;
 import tdb.search.entity.Key;
 
@@ -12,6 +14,11 @@ public class DBCacheService {
 
 	@PersistenceContext
 	protected EntityManager em;
+
+	public DBCacheService(){}
+	public DBCacheService(EntityManager em) {
+		this.em = em;
+	}
 
 	/**
 	 * 検索キーに存在するか？

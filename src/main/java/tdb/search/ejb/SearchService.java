@@ -4,6 +4,11 @@ import javax.ejb.Asynchronous;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+import tdb.search.ejb.db.BatchUtilsBean;
+import tdb.search.ejb.db.DBCacheService;
+import tdb.search.ejb.db.DBSearchService;
+import tdb.search.ejb.scrape.ScrapeService;
+import tdb.search.rsentity.SearchResult;
 import tdb.search.util.Page;
 
 /**
@@ -26,6 +31,14 @@ public class SearchService {
 
 	@EJB
 	protected BatchUtilsBean batchUtils;
+
+	public SearchService() {}
+	public SearchService(ScrapeService scrape, DBSearchService db, DBCacheService cache, BatchUtilsBean batchUtils){
+		this.scrape = scrape;
+		this.db = db;
+		this.cache = cache;
+		this.batchUtils = batchUtils;
+	}
 
 
 

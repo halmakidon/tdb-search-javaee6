@@ -1,4 +1,4 @@
-package tdb.search.ejb;
+package tdb.search.rsentity;
 
 import java.io.Serializable;
 

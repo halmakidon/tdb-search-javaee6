@@ -1,4 +1,4 @@
-package tdb.search.ejb;
+package tdb.search.ejb.db;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -8,6 +8,8 @@ import javax.persistence.EntityManager;
 
 import org.junit.Test;
 
+import tdb.search.dto.CompanyResult;
+import tdb.search.ejb.db.DBCacheService;
 import tdb.search.entity.Company;
 import tdb.search.entity.Key;
 import tdb.search.testutil.DBTestUtilsBean;
@@ -19,8 +21,7 @@ public class DBCacheServiceTest {
 	public void testHasCache() {
 		DBTestUtilsBean dbTest = new DBTestUtilsBean();
 
-		DBCacheService cache = new DBCacheService();
-		cache.em = dbTest.getEntityManager();
+		DBCacheService cache = new DBCacheService(dbTest.getEntityManager());
 
 		dbTest.start(new CreateKey(dbTest.getEntityManager()));
 		dbTest.start(new TestHasCache(cache));

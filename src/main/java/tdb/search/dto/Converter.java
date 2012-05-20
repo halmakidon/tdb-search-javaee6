@@ -1,4 +1,4 @@
-package tdb.search.ejb;
+package tdb.search.dto;
 
 import tdb.search.entity.Company;
 

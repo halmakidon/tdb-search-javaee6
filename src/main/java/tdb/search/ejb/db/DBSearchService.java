@@ -1,4 +1,4 @@
-package tdb.search.ejb;
+package tdb.search.ejb.db;
 
 import java.util.List;
 
@@ -12,10 +12,12 @@ import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.SetJoin;
 
+import tdb.search.dto.Converter;
 import tdb.search.entity.Company;
 import tdb.search.entity.Company_;
 import tdb.search.entity.Key;
 import tdb.search.entity.Key_;
+import tdb.search.rsentity.SearchResult;
 import tdb.search.util.Page;
 
 @Stateless
@@ -23,6 +25,11 @@ public class DBSearchService {
 
 	@PersistenceContext
 	protected EntityManager em;
+
+	public DBSearchService() {}
+	public DBSearchService(EntityManager em) {
+		this.em = em;
+	}
 
 	/**
 	 * DBからデータを取得する

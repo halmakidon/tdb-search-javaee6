@@ -1,6 +1,5 @@
-package tdb.search.rest;
+package tdb.search.rsentity;
 
-import tdb.search.ejb.AbstractResult;
 
 public class ErrorEntity extends AbstractResult {
 

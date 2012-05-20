@@ -1,8 +1,6 @@
-package tdb.search.ejb;
+package tdb.search.dto;
 
 import java.io.Serializable;
-
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * 結果返却用のCompanyオブジェクト
@@ -10,7 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author sekky
  *
  */
-@XmlRootElement(name = "CompanyResult")
 public class CompanyResult implements Serializable {
 
 	private static final long serialVersionUID = -3920288284434129323L;

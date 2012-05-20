@@ -1,21 +1,14 @@
 package tdb.search.ejb;
 
-import java.io.Serializable;
-
 import java.util.Arrays;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-@XmlRootElement(name = "SearchResult")
-public class SearchResult implements Serializable {
+public class SearchResult extends AbstractResult {
 
 	private static final long serialVersionUID = 7482782076465580525L;
 	private int searchHit;
 	private int maxPage;
 	private int currentPage;
-
 	private CompanyResult[] list;
-	private boolean success;
 
 	/**
 	 * @return the searchHit
@@ -77,20 +70,6 @@ public class SearchResult implements Serializable {
 		this.list = list;
 	}
 
-	/**
-	 * @return the success
-	 */
-	public final boolean isSuccess() {
-		return success;
-	}
-
-	/**
-	 * @param success
-	 *            the success to set
-	 */
-	public final void setSuccess(boolean success) {
-		this.success = success;
-	}
 
 	/*
 	 * (non-Javadoc)

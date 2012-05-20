@@ -30,7 +30,12 @@
 			<artifactId>jsoup</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-
+		<!-- commons-lang -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.1</version>
+		</dependency>
 		<!-- JPA Metamodel Generator -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
